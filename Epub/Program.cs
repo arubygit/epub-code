@@ -13,7 +13,7 @@ namespace EpubSharp
         static void Main(string[] args)
         {
             // Read an epub file
-            EpubBook book = EpubReader.Read("my.epub");
+            EpubBook book = EpubReader.Read(@"C:\dev\ePub\KortextEpub\EpubSharp.Tests\Samples\Good-and-Evil.epub");
 
             // Read metadata
             string title = book.Title;
@@ -48,7 +48,7 @@ namespace EpubSharp
             EpubWriter writer = new EpubWriter();
 
             writer.AddAuthor("Foo Bar");
-            writer.SetCover(imageCover, ImageFormat.Png);
+//            writer.SetCover(imageCover, ImageFormat.Png);
 
             writer.Write("new.epub");
         }

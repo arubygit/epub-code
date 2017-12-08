@@ -19,7 +19,7 @@ namespace EpubSharp.Tests
             Func<string, string> normalize = text => text.Replace("\r", "").Replace("\n", "").Replace(" ", "");
             var expected = File.ReadAllText(Cwd.Combine(@"Samples/epub-assorted/boothbyg3249432494-8epub.txt"));
             var actual = book.ToPlainText();
-            Assert.Equals(normalize(expected), normalize(actual));
+            Assert.AreEqual(normalize(expected), normalize(actual));
 
             var lines = actual.Split('\n').Select(str => str.Trim()).ToList();
             Assert.IsNotNull(lines.SingleOrDefault(e => e == "I. KAPITEL."));
@@ -50,23 +50,23 @@ namespace EpubSharp.Tests
             Func<string, string> normalize = text => text.Replace("\r", "").Replace("\n", "").Replace(" ", "");
             var expected = File.ReadAllText(Cwd.Combine(@"Samples/epub-assorted/iOS Hackers Handbook.txt"));
             var actual = book.ToPlainText();
-            Assert.Equals(normalize(expected), normalize(actual));
+            Assert.AreEqual(normalize(expected), normalize(actual));
             
             var trimmed = string.Join("\n", actual.Split('\n').Select(str => str.Trim()));
-            Assert.Equals(1, Regex.Matches(trimmed, "Chapter 1\niOS Security Basics").Count);
-            Assert.Equals(1, Regex.Matches(trimmed, "Chapter 2\niOS in the Enterprise").Count);
-            Assert.Equals(1, Regex.Matches(trimmed, "Chapter 3\nEncryption").Count);
-            Assert.Equals(1, Regex.Matches(trimmed, "Chapter 4\nCode Signing and Memory Protections").Count);
-            Assert.Equals(1, Regex.Matches(trimmed, "Chapter 5\nSandboxing").Count);
-            Assert.Equals(1, Regex.Matches(trimmed, "Chapter 6\nFuzzing iOS Applications").Count);
-            Assert.Equals(1, Regex.Matches(trimmed, "Chapter 7\nExploitation").Count);
-            Assert.Equals(1, Regex.Matches(trimmed, "Chapter 8\nReturn-Oriented Programming").Count);
-            Assert.Equals(1, Regex.Matches(trimmed, "Chapter 9\nKernel Debugging and Exploitation").Count);
-            Assert.Equals(1, Regex.Matches(trimmed, "Chapter 10\nJailbreaking").Count);
-            Assert.Equals(1, Regex.Matches(trimmed, "Chapter 11\nBaseband Attacks").Count);
-            Assert.Equals(1, Regex.Matches(trimmed, "How This Book Is Organized").Count);
-            Assert.Equals(2, Regex.Matches(trimmed, "Appendix: Resources").Count);
-            Assert.Equals(2, Regex.Matches(trimmed, "Case Study: Pwn2Own 2010").Count);
+            Assert.AreEqual(1, Regex.Matches(trimmed, "Chapter 1\niOS Security Basics").Count);
+            Assert.AreEqual(1, Regex.Matches(trimmed, "Chapter 2\niOS in the Enterprise").Count);
+            Assert.AreEqual(1, Regex.Matches(trimmed, "Chapter 3\nEncryption").Count);
+            Assert.AreEqual(1, Regex.Matches(trimmed, "Chapter 4\nCode Signing and Memory Protections").Count);
+            Assert.AreEqual(1, Regex.Matches(trimmed, "Chapter 5\nSandboxing").Count);
+            Assert.AreEqual(1, Regex.Matches(trimmed, "Chapter 6\nFuzzing iOS Applications").Count);
+            Assert.AreEqual(1, Regex.Matches(trimmed, "Chapter 7\nExploitation").Count);
+            Assert.AreEqual(1, Regex.Matches(trimmed, "Chapter 8\nReturn-Oriented Programming").Count);
+            Assert.AreEqual(1, Regex.Matches(trimmed, "Chapter 9\nKernel Debugging and Exploitation").Count);
+            Assert.AreEqual(1, Regex.Matches(trimmed, "Chapter 10\nJailbreaking").Count);
+            Assert.AreEqual(1, Regex.Matches(trimmed, "Chapter 11\nBaseband Attacks").Count);
+            Assert.AreEqual(1, Regex.Matches(trimmed, "How This Book Is Organized").Count);
+            Assert.AreEqual(2, Regex.Matches(trimmed, "Appendix: Resources").Count);
+            Assert.AreEqual(2, Regex.Matches(trimmed, "Case Study: Pwn2Own 2010").Count);
         }             
     }
 }

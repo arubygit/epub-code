@@ -22,20 +22,20 @@ namespace EpubSharp.Tests
             var epub = WriteAndRead(new EpubWriter());
 
             Assert.IsNull(epub.Title);
-            Assert.Equals(0, epub.Authors.Count());
+            Assert.AreEqual(0, epub.Authors.Count());
             Assert.IsNull(epub.CoverImage);
 
-            Assert.Equals(0, epub.Resources.Html.Count);
-            Assert.Equals(0, epub.Resources.Css.Count);
-            Assert.Equals(0, epub.Resources.Images.Count);
-            Assert.Equals(0, epub.Resources.Fonts.Count);
-            Assert.Equals(1, epub.Resources.Other.Count); // ncx
+            Assert.AreEqual(0, epub.Resources.Html.Count);
+            Assert.AreEqual(0, epub.Resources.Css.Count);
+            Assert.AreEqual(0, epub.Resources.Images.Count);
+            Assert.AreEqual(0, epub.Resources.Fonts.Count);
+            Assert.AreEqual(1, epub.Resources.Other.Count); // ncx
             
-            Assert.Equals(0, epub.SpecialResources.HtmlInReadingOrder.Count);
+            Assert.AreEqual(0, epub.SpecialResources.HtmlInReadingOrder.Count);
             Assert.IsNull(epub.SpecialResources.Ocf);
             Assert.IsNotNull(epub.SpecialResources.Opf);
 
-            Assert.Equals(0, epub.TableOfContents.Count);
+            Assert.AreEqual(0, epub.TableOfContents.Count);
 
             Assert.IsNotNull(epub.Format.Ocf);
             Assert.IsNotNull(epub.Format.Opf);
@@ -50,24 +50,24 @@ namespace EpubSharp.Tests
 
             writer.AddAuthor("Foo Bar");
             var epub = WriteAndRead(writer);
-            Assert.Equals(1, epub.Authors.Count());
+            Assert.AreEqual(1, epub.Authors.Count());
 
             writer.AddAuthor("Zoo Gar");
             epub = WriteAndRead(writer);
-            Assert.Equals(2, epub.Authors.Count());
+            Assert.AreEqual(2, epub.Authors.Count());
 
             writer.RemoveAuthor("Foo Bar");
             epub = WriteAndRead(writer);
-            Assert.Equals(1, epub.Authors.Count());
-            Assert.Equals("Zoo Gar", epub.Authors.First());
+            Assert.AreEqual(1, epub.Authors.Count());
+            Assert.AreEqual("Zoo Gar", epub.Authors.First());
 
             writer.RemoveAuthor("Unexisting");
             epub = WriteAndRead(writer);
-            Assert.Equals(1, epub.Authors.Count());
+            Assert.AreEqual(1, epub.Authors.Count());
 
             writer.ClearAuthors();
             epub = WriteAndRead(writer);
-            Assert.Equals(0, epub.Authors.Count());
+            Assert.AreEqual(0, epub.Authors.Count());
 
             writer.RemoveAuthor("Unexisting");
             writer.ClearAuthors();
@@ -80,11 +80,11 @@ namespace EpubSharp.Tests
 
             writer.SetTitle("Title1");
             var epub = WriteAndRead(writer);
-            Assert.Equals("Title1", epub.Title);
+            Assert.AreEqual("Title1", epub.Title);
 
             writer.SetTitle("Title2");
             epub = WriteAndRead(writer);
-            Assert.Equals("Title2", epub.Title);
+            Assert.AreEqual("Title2", epub.Title);
 
             writer.RemoveTitle();
             epub = WriteAndRead(writer);
@@ -101,7 +101,7 @@ namespace EpubSharp.Tests
 
             var epub = WriteAndRead(writer);
 
-            Assert.Equals(1, epub.Resources.Images.Count);
+            Assert.AreEqual(1, epub.Resources.Images.Count);
             Assert.IsNotNull(epub.CoverImage);
         }
 
@@ -117,7 +117,7 @@ namespace EpubSharp.Tests
 
             Assert.IsNotNull(epub1.CoverImage);
             Assert.IsNull(epub2.CoverImage);
-            Assert.Equals(epub1.Resources.Images.Count - 1, epub2.Resources.Images.Count);
+            Assert.AreEqual(epub1.Resources.Images.Count - 1, epub2.Resources.Images.Count);
         }
 
         [TestMethod]
@@ -139,17 +139,17 @@ namespace EpubSharp.Tests
             };
             var epub = WriteAndRead(writer);
 
-            Assert.Equals("Chapter 1", chapters[0].Title);
-            Assert.Equals("Chapter 2", chapters[1].Title);
+            Assert.AreEqual("Chapter 1", chapters[0].Title);
+            Assert.AreEqual("Chapter 2", chapters[1].Title);
 
-            Assert.Equals(2, epub.TableOfContents.Count);
+            Assert.AreEqual(2, epub.TableOfContents.Count);
             for (var i = 0; i < chapters.Length; ++i)
             {
-                Assert.Equals(chapters[i].Title, epub.TableOfContents[i].Title);
-                Assert.Equals(chapters[i].FileName, epub.TableOfContents[i].FileName);
-                Assert.Equals(chapters[i].Anchor, epub.TableOfContents[i].Anchor);
-                Assert.Equals(0, chapters[i].SubChapters.Count);
-                Assert.Equals(0, epub.TableOfContents[i].SubChapters.Count);
+                Assert.AreEqual(chapters[i].Title, epub.TableOfContents[i].Title);
+                Assert.AreEqual(chapters[i].FileName, epub.TableOfContents[i].FileName);
+                Assert.AreEqual(chapters[i].Anchor, epub.TableOfContents[i].Anchor);
+                Assert.AreEqual(0, chapters[i].SubChapters.Count);
+                Assert.AreEqual(0, epub.TableOfContents[i].SubChapters.Count);
             }
         }
 
@@ -162,13 +162,13 @@ namespace EpubSharp.Tests
             writer.AddChapter("Chapter 3", "fooz barz");
 
             var epub = WriteAndRead(writer);
-            Assert.Equals(3, epub.TableOfContents.Count);
+            Assert.AreEqual(3, epub.TableOfContents.Count);
 
             writer = new EpubWriter(epub);
             writer.ClearChapters();
             
             epub = WriteAndRead(writer);
-            Assert.Equals(0, epub.TableOfContents.Count);
+            Assert.AreEqual(0, epub.TableOfContents.Count);
         }
 
         [TestMethod]
@@ -178,7 +178,7 @@ namespace EpubSharp.Tests
             writer.ClearChapters();
 
             var epub = WriteAndRead(writer);
-            Assert.Equals(0, epub.TableOfContents.Count);
+            Assert.AreEqual(0, epub.TableOfContents.Count);
         }
 
         [TestMethod]
@@ -191,19 +191,19 @@ namespace EpubSharp.Tests
 
             var epub = WriteAndRead(writer);
 
-            Assert.Equals(1, epub.Resources.Css.Count);
-            Assert.Equals("style.css", epub.Resources.Css.First().FileName);
-            Assert.Equals("body {}", epub.Resources.Css.First().TextContent);
+            Assert.AreEqual(1, epub.Resources.Css.Count);
+            Assert.AreEqual("style.css", epub.Resources.Css.First().FileName);
+            Assert.AreEqual("body {}", epub.Resources.Css.First().TextContent);
 
-            Assert.Equals(1, epub.Resources.Images.Count);
-            Assert.Equals("img.jpeg", epub.Resources.Images.First().FileName);
-            Assert.Equals(1, epub.Resources.Images.First().Content.Length);
-            Assert.Equals(0x42, epub.Resources.Images.First().Content.First());
+            Assert.AreEqual(1, epub.Resources.Images.Count);
+            Assert.AreEqual("img.jpeg", epub.Resources.Images.First().FileName);
+            Assert.AreEqual(1, epub.Resources.Images.First().Content.Length);
+            Assert.AreEqual(0x42, epub.Resources.Images.First().Content.First());
 
-            Assert.Equals(1, epub.Resources.Fonts.Count);
-            Assert.Equals("font.ttf", epub.Resources.Fonts.First().FileName);
-            Assert.Equals(1, epub.Resources.Fonts.First().Content.Length);
-            Assert.Equals(0x24, epub.Resources.Fonts.First().Content.First());
+            Assert.AreEqual(1, epub.Resources.Fonts.Count);
+            Assert.AreEqual("font.ttf", epub.Resources.Fonts.First().FileName);
+            Assert.AreEqual(1, epub.Resources.Fonts.First().Content.Length);
+            Assert.AreEqual(0x24, epub.Resources.Fonts.First().Content.First());
         }
 
         private EpubBook WriteAndRead(EpubWriter writer)
