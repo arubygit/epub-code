@@ -1,15 +1,16 @@
-﻿using Xunit;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EpubSharp.Tests
 {
+    [TestClass]
     public class EpubArchiveTests
     {
-        [Fact]
+        [TestMethod]
         public void FindEntryTest()
         {
             var archive = new EpubArchive(Cwd.Combine("Samples/epub-assorted/Bogtyven.epub"));
-            Assert.NotNull(archive.FindEntry("META-INF/container.xml"));
-            Assert.Null(archive.FindEntry("UNEXISTING_ENTRY"));
+            Assert.IsNotNull(archive.FindEntry("META-INF/container.xml"));
+            Assert.IsNull(archive.FindEntry("UNEXISTING_ENTRY"));
         }
     }
 }

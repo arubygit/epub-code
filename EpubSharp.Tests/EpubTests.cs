@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EpubSharp.Format;
-using Xunit;
+
 
 namespace EpubSharp.Tests
 {
@@ -49,19 +49,19 @@ namespace EpubSharp.Tests
 
         private void AssertEpub(EpubBook expected, EpubBook actual)
         {
-            Assert.NotNull(expected);
-            Assert.NotNull(actual);
+            Assert.IsNotNull(expected);
+            Assert.IsNotNull(actual);
 
-            Assert.Equal(expected.Title, actual.Title);
+            Assert.Equals(expected.Title, actual.Title);
 
             AssertPrimitiveCollection(expected.Authors, actual.Authors, nameof(actual.Authors));
 
-            Assert.Equal(expected.CoverImage == null, actual.CoverImage == null);
+            Assert.Equals(expected.CoverImage == null, actual.CoverImage == null);
             if (expected.CoverImage != null && actual.CoverImage != null)
             {
-                Assert.True(expected.CoverImage.Length > 0, "Expected CoverImage.Length > 0");
-                Assert.True(actual.CoverImage.Length > 0, "Actual CoverImage.Length > 0");
-                Assert.Equal(expected.CoverImage.Length, actual.CoverImage.Length);
+                Assert.IsTrue(expected.CoverImage.Length > 0, "Expected CoverImage.Length > 0");
+                Assert.IsTrue(actual.CoverImage.Length > 0, "Actual CoverImage.Length > 0");
+                Assert.Equals(expected.CoverImage.Length, actual.CoverImage.Length);
             }
 
             AssertContentFileCollection(expected.Resources.Css, actual.Resources.Css);
@@ -88,13 +88,13 @@ namespace EpubSharp.Tests
 
         private void AssertCollectionWithIndex<T>(IEnumerable<T> expected, IEnumerable<T> actual, Action<List<T>, List<T>, int> assert)
         {
-            Assert.Equal(expected == null, actual == null);
+            Assert.Equals(expected == null, actual == null);
             if (expected != null && actual != null)
             {
                 var old = expected.ToList();
                 var @new = actual.ToList();
 
-                Assert.Equal(old.Count, @new.Count);
+                Assert.Equals(old.Count, @new.Count);
 
                 for (var i = 0; i < @new.Count; ++i)
                 {
@@ -115,7 +115,7 @@ namespace EpubSharp.Tests
         {
             AssertCollectionWithIndex(expected, actual, (a, b, i) =>
             {
-                Assert.True(a.Contains(b[i]), unitName);
+                Assert.IsTrue(a.Contains(b[i]), unitName);
             });
         }
 
@@ -124,7 +124,7 @@ namespace EpubSharp.Tests
         {
             AssertCollection(expected, actual, (a, b) =>
             {
-                Assert.Equal(a.Key, b.Key);
+                Assert.Equals(a.Key, b.Key);
                 AssertContentFile(a.Value, b.Value);
             });
         }
@@ -140,27 +140,27 @@ namespace EpubSharp.Tests
 
         private void AssertContentFile(EpubFile expected, EpubFile actual)
         {
-            Assert.True(expected.Content.SequenceEqual(actual.Content));
-            Assert.Equal(expected.ContentType, actual.ContentType);
-            Assert.Equal(expected.FileName, actual.FileName);
-            Assert.Equal(expected.MimeType, actual.MimeType);
+            Assert.IsTrue(expected.Content.SequenceEqual(actual.Content));
+            Assert.Equals(expected.ContentType, actual.ContentType);
+            Assert.Equals(expected.FileName, actual.FileName);
+            Assert.Equals(expected.MimeType, actual.MimeType);
 
             var castedOld = expected as EpubTextFile;
             var castedNew = actual as EpubTextFile;
-            Assert.Equal(castedOld == null, castedNew == null);
+            Assert.Equals(castedOld == null, castedNew == null);
             if (castedOld != null && castedNew != null)
             {
-                Assert.Equal(castedOld.TextContent, castedNew.TextContent);
+                Assert.Equals(castedOld.TextContent, castedNew.TextContent);
             }
         }
 
         private void AssertChapter(EpubChapter expected, EpubChapter actual)
         {
-            Assert.Equal(expected.Anchor, actual.Anchor);
-            Assert.Equal(expected.FileName, actual.FileName);
-            Assert.Equal(expected.Title, actual.Title);
+            Assert.Equals(expected.Anchor, actual.Anchor);
+            Assert.Equals(expected.FileName, actual.FileName);
+            Assert.Equals(expected.Title, actual.Title);
 
-            Assert.Equal(expected.SubChapters.Count, actual.SubChapters.Count);
+            Assert.Equals(expected.SubChapters.Count, actual.SubChapters.Count);
             for (var i = 0; i < expected.SubChapters.Count; ++i)
             {
                 AssertChapter(expected.SubChapters[i], actual.SubChapters[i]);
@@ -176,21 +176,21 @@ namespace EpubSharp.Tests
             // This is a dangerous assumption.
             AssertCollection(expected.RootFiles.Take(1), actual.RootFiles, (a, b) =>
             {
-                Assert.Equal(a.FullPath, b.FullPath);
-                Assert.Equal(a.MediaType, b.MediaType);
+                Assert.Equals(a.FullPath, b.FullPath);
+                Assert.Equals(a.MediaType, b.MediaType);
             });
-            Assert.Equal(expected.RootFilePath, actual.RootFilePath);
+            Assert.Equals(expected.RootFilePath, actual.RootFilePath);
         }
 
         private void AssertOpf(OpfDocument expected, OpfDocument actual)
         {
-            Assert.Equal(expected == null, actual == null);
+            Assert.Equals(expected == null, actual == null);
             if (expected != null && actual != null)
             {
-                Assert.Equal(expected.UniqueIdentifier, actual.UniqueIdentifier);
-                Assert.Equal(expected.EpubVersion, actual.EpubVersion);
+                Assert.Equals(expected.UniqueIdentifier, actual.UniqueIdentifier);
+                Assert.Equals(expected.EpubVersion, actual.EpubVersion);
 
-                Assert.Equal(expected.Metadata == null, actual.Metadata == null);
+                Assert.Equals(expected.Metadata == null, actual.Metadata == null);
                 if (expected.Metadata != null && actual.Metadata != null)
                 {
                     AssertCreators(expected.Metadata.Creators, actual.Metadata.Creators);
@@ -198,32 +198,32 @@ namespace EpubSharp.Tests
 
                     AssertCollection(expected.Metadata.Dates, actual.Metadata.Dates, (a, b) =>
                     {
-                        Assert.Equal(a.Text, b.Text);
-                        Assert.Equal(a.Event, b.Event);
+                        Assert.Equals(a.Text, b.Text);
+                        Assert.Equals(a.Event, b.Event);
                     });
 
                     AssertCollection(expected.Metadata.Identifiers, actual.Metadata.Identifiers, (a, b) =>
                     {
-                        Assert.Equal(a.Id, b.Id);
-                        Assert.Equal(a.Scheme, b.Scheme);
-                        Assert.Equal(a.Text, b.Text);
+                        Assert.Equals(a.Id, b.Id);
+                        Assert.Equals(a.Scheme, b.Scheme);
+                        Assert.Equals(a.Text, b.Text);
                     });
 
                     AssertCollection(expected.Metadata.Metas, actual.Metadata.Metas, (a, b) =>
                     {
-                        Assert.Equal(a.Id, b.Id);
-                        Assert.Equal(a.Name, b.Name);
-                        Assert.Equal(a.Property, b.Property);
-                        Assert.Equal(a.Refines, b.Refines);
-                        Assert.Equal(a.Scheme, b.Scheme);
-                        Assert.Equal(a.Text, b.Text);
+                        Assert.Equals(a.Id, b.Id);
+                        Assert.Equals(a.Name, b.Name);
+                        Assert.Equals(a.Property, b.Property);
+                        Assert.Equals(a.Refines, b.Refines);
+                        Assert.Equals(a.Scheme, b.Scheme);
+                        Assert.Equals(a.Text, b.Text);
                     });
 
                     AssertCollection(expected.Metadata.Identifiers, actual.Metadata.Identifiers, (a, b) =>
                     {
-                        Assert.Equal(a.Id, b.Id);
-                        Assert.Equal(a.Scheme, b.Scheme);
-                        Assert.Equal(a.Text, b.Text);
+                        Assert.Equals(a.Id, b.Id);
+                        Assert.Equals(a.Scheme, b.Scheme);
+                        Assert.Equals(a.Text, b.Text);
                     });
 
                     AssertPrimitiveCollection(expected.Metadata.Coverages, actual.Metadata.Coverages, "Coverage");
@@ -238,49 +238,49 @@ namespace EpubSharp.Tests
                     AssertPrimitiveCollection(expected.Metadata.Types, actual.Metadata.Types, "Type");
                 }
 
-                Assert.Equal(expected.Guide == null, actual.Guide == null);
+                Assert.Equals(expected.Guide == null, actual.Guide == null);
                 if (expected.Guide != null && actual.Guide != null)
                 {
                     AssertCollection(expected.Guide.References, actual.Guide.References, (a, b) =>
                     {
-                        Assert.Equal(a.Title, b.Title);
-                        Assert.Equal(a.Type, b.Type);
-                        Assert.Equal(a.Href, b.Href);
+                        Assert.Equals(a.Title, b.Title);
+                        Assert.Equals(a.Type, b.Type);
+                        Assert.Equals(a.Href, b.Href);
                     });
                 }
 
-                Assert.Equal(expected.Manifest == null, actual.Manifest == null);
+                Assert.Equals(expected.Manifest == null, actual.Manifest == null);
                 if (expected.Manifest != null && actual.Manifest != null)
                 {
                     AssertCollection(expected.Manifest.Items, actual.Manifest.Items, (a, b) =>
                     {
-                        Assert.Equal(a.Fallback, b.Fallback);
-                        Assert.Equal(a.FallbackStyle, b.FallbackStyle);
-                        Assert.Equal(a.Href, b.Href);
-                        Assert.Equal(a.Id, b.Id);
-                        Assert.Equal(a.MediaType, b.MediaType);
-                        Assert.Equal(a.RequiredModules, b.RequiredModules);
-                        Assert.Equal(a.RequiredNamespace, b.RequiredNamespace);
+                        Assert.Equals(a.Fallback, b.Fallback);
+                        Assert.Equals(a.FallbackStyle, b.FallbackStyle);
+                        Assert.Equals(a.Href, b.Href);
+                        Assert.Equals(a.Id, b.Id);
+                        Assert.Equals(a.MediaType, b.MediaType);
+                        Assert.Equals(a.RequiredModules, b.RequiredModules);
+                        Assert.Equals(a.RequiredNamespace, b.RequiredNamespace);
                         AssertPrimitiveCollection(a.Properties, b.Properties, "Item.Property");
                     });
                 }
 
-                Assert.Equal(expected.Spine == null, actual.Spine == null);
+                Assert.Equals(expected.Spine == null, actual.Spine == null);
                 if (expected.Spine != null && actual.Spine != null)
                 {
-                    Assert.Equal(expected.Spine.Toc, actual.Spine.Toc);
+                    Assert.Equals(expected.Spine.Toc, actual.Spine.Toc);
                     AssertCollection(expected.Spine.ItemRefs, actual.Spine.ItemRefs, (a, b) =>
                     {
-                        Assert.Equal(a.Id, b.Id);
-                        Assert.Equal(a.IdRef, b.IdRef);
-                        Assert.Equal(a.Linear, b.Linear);
+                        Assert.Equals(a.Id, b.Id);
+                        Assert.Equals(a.IdRef, b.IdRef);
+                        Assert.Equals(a.Linear, b.Linear);
                         AssertPrimitiveCollection(a.Properties, b.Properties, "ItemRef.Property");
                     });
                 }
 
-                Assert.Equal(expected.FindCoverPath(), actual.FindCoverPath());
-                Assert.Equal(expected.FindNavPath(), actual.FindNavPath());
-                Assert.Equal(expected.FindNcxPath(), actual.FindNcxPath());
+                Assert.Equals(expected.FindCoverPath(), actual.FindCoverPath());
+                Assert.Equals(expected.FindNavPath(), actual.FindNavPath());
+                Assert.Equals(expected.FindNcxPath(), actual.FindNcxPath());
             }
         }
 
@@ -288,66 +288,66 @@ namespace EpubSharp.Tests
         {
             AssertCollection(expected, actual, (a, b) =>
             {
-                Assert.Equal(a.AlternateScript, b.AlternateScript);
-                Assert.Equal(a.FileAs, b.FileAs);
-                Assert.Equal(a.Role, b.Role);
-                Assert.Equal(a.Text, b.Text);
+                Assert.Equals(a.AlternateScript, b.AlternateScript);
+                Assert.Equals(a.FileAs, b.FileAs);
+                Assert.Equals(a.Role, b.Role);
+                Assert.Equals(a.Text, b.Text);
             });
         }
 
         private void AssertNcx(NcxDocument expected, NcxDocument actual)
         {
-            Assert.Equal(expected == null, actual == null);
+            Assert.Equals(expected == null, actual == null);
             if (expected != null && actual != null)
             {
-                Assert.Equal(expected.DocAuthor, actual.DocAuthor);
-                Assert.Equal(expected.DocTitle, actual.DocTitle);
+                Assert.Equals(expected.DocAuthor, actual.DocAuthor);
+                Assert.Equals(expected.DocTitle, actual.DocTitle);
 
                 AssertCollection(expected.Meta, actual.Meta, (a, b) =>
                 {
-                    Assert.Equal(a.Name, b.Name);
-                    Assert.Equal(a.Content, b.Content);
-                    Assert.Equal(a.Scheme, b.Scheme);
+                    Assert.Equals(a.Name, b.Name);
+                    Assert.Equals(a.Content, b.Content);
+                    Assert.Equals(a.Scheme, b.Scheme);
                 });
 
-                Assert.Equal(expected.NavList == null, actual.NavList == null);
+                Assert.Equals(expected.NavList == null, actual.NavList == null);
                 if (expected.NavList != null && actual.NavList != null)
                 {
-                    Assert.Equal(expected.NavList.Id, actual.NavList.Id);
-                    Assert.Equal(expected.NavList.Class, actual.NavList.Class);
-                    Assert.Equal(expected.NavList.Label, actual.NavList.Label);
+                    Assert.Equals(expected.NavList.Id, actual.NavList.Id);
+                    Assert.Equals(expected.NavList.Class, actual.NavList.Class);
+                    Assert.Equals(expected.NavList.Label, actual.NavList.Label);
 
                     AssertCollection(expected.NavList.NavTargets, actual.NavList.NavTargets, (a, b) =>
                     {
-                        Assert.Equal(a.Id, b.Id);
-                        Assert.Equal(a.Class, b.Class);
-                        Assert.Equal(a.Label, b.Label);
-                        Assert.Equal(a.PlayOrder, b.PlayOrder);
-                        Assert.Equal(a.ContentSource, b.ContentSource);
+                        Assert.Equals(a.Id, b.Id);
+                        Assert.Equals(a.Class, b.Class);
+                        Assert.Equals(a.Label, b.Label);
+                        Assert.Equals(a.PlayOrder, b.PlayOrder);
+                        Assert.Equals(a.ContentSource, b.ContentSource);
                     });
                 }
 
                 AssertCollection(expected.NavMap.NavPoints, actual.NavMap.NavPoints, (a, b) =>
                 {
-                    Assert.Equal(a.Id, b.Id);
-                    Assert.Equal(a.PlayOrder, b.PlayOrder);
-                    Assert.Equal(a.NavLabelText, b.NavLabelText);
-                    Assert.Equal(a.Class, b.Class);
-                    Assert.Equal(a.ContentSrc, b.ContentSrc);
+                    Assert.Equals(a.Id, b.Id);
+                    Assert.Equals(a.PlayOrder, b.PlayOrder);
+                    Assert.Equals(a.NavLabelText, b.NavLabelText);
+                    Assert.Equals(a.Class, b.Class);
+                    Assert.Equals(a.ContentSrc, b.ContentSrc);
                     AssertNavigationPoints(a.NavPoints, b.NavPoints);
                 });
 
-                Assert.Equal(expected.PageList == null, actual.PageList == null);
+                Assert.Equals(expected.PageList == null, actual.PageList == null);
                 if (expected.PageList != null && actual.PageList != null)
                 {
                     AssertCollection(expected.PageList.PageTargets, actual.PageList.PageTargets, (a, b) =>
                     {
-                        Assert.Equal(a.Id, b.Id);
-                        Assert.Equal(a.Class, b.Class);
-                        Assert.Equal(a.ContentSrc, b.ContentSrc);
-                        Assert.Equal(a.NavLabelText, b.NavLabelText);
-                        Assert.Equal(a.Type, b.Type);
-                        Assert.Equal(a.Value, b.Value);
+                        Assert.Equals(a.Id, b.Id);
+                        Assert.Equals(a.Class, b.Class);
+                        Assert.Equals(a.ContentSrc, b.ContentSrc);
+                        Assert.Equals(a.NavLabelText, b.NavLabelText);
+                        Assert.Equals(a.Type, b.Type);
+                        Assert.Equals(a.Value, b.Value);
                     });
                 }
             }
@@ -357,12 +357,12 @@ namespace EpubSharp.Tests
         {
             AssertCollection(expected, actual, (a, b) =>
             {
-                Assert.Equal(a.Id, b.Id);
-                Assert.Equal(a.Class, b.Class);
-                Assert.Equal(a.ContentSrc, b.ContentSrc);
-                Assert.Equal(a.NavLabelText, b.NavLabelText);
-                Assert.Equal(a.PlayOrder, b.PlayOrder);
-                Assert.Equal(a.NavPoints == null, b.NavPoints == null);
+                Assert.Equals(a.Id, b.Id);
+                Assert.Equals(a.Class, b.Class);
+                Assert.Equals(a.ContentSrc, b.ContentSrc);
+                Assert.Equals(a.NavLabelText, b.NavLabelText);
+                Assert.Equals(a.PlayOrder, b.PlayOrder);
+                Assert.Equals(a.NavPoints == null, b.NavPoints == null);
                 if (a.NavPoints != null && b.NavPoints != null)
                 {
                     AssertNavigationPoints(a.NavPoints, b.NavPoints);
@@ -372,42 +372,42 @@ namespace EpubSharp.Tests
 
         private void AssertNav(NavDocument expected, NavDocument actual)
         {
-            Assert.Equal(expected == null, actual == null);
+            Assert.Equals(expected == null, actual == null);
             if (expected != null && actual != null)
             {
-                Assert.Equal(expected.Head == null, actual.Head == null);
+                Assert.Equals(expected.Head == null, actual.Head == null);
                 if (expected.Head != null && actual.Head != null)
                 {
-                    Assert.Equal(expected.Head.Title, actual.Head.Title);
+                    Assert.Equals(expected.Head.Title, actual.Head.Title);
                     AssertCollection(expected.Head.Links, actual.Head.Links, (a, b) =>
                     {
-                        Assert.Equal(a.Class, b.Class);
-                        Assert.Equal(a.Href, b.Href);
-                        Assert.Equal(a.Rel, b.Rel);
-                        Assert.Equal(a.Title, b.Title);
-                        Assert.Equal(a.Type, b.Type);
-                        Assert.Equal(a.Media, b.Media);
+                        Assert.Equals(a.Class, b.Class);
+                        Assert.Equals(a.Href, b.Href);
+                        Assert.Equals(a.Rel, b.Rel);
+                        Assert.Equals(a.Title, b.Title);
+                        Assert.Equals(a.Type, b.Type);
+                        Assert.Equals(a.Media, b.Media);
                     });
 
                     AssertCollection(expected.Head.Metas, actual.Head.Metas, (a, b) =>
                     {
-                        Assert.Equal(a.Charset, b.Charset);
-                        Assert.Equal(a.Name, b.Name);
-                        Assert.Equal(a.Content, b.Content);
+                        Assert.Equals(a.Charset, b.Charset);
+                        Assert.Equals(a.Name, b.Name);
+                        Assert.Equals(a.Content, b.Content);
                     });
                 }
 
-                Assert.Equal(expected.Body == null, actual.Body == null);
+                Assert.Equals(expected.Body == null, actual.Body == null);
                 if (expected.Body != null && actual.Body != null)
                 {
-                    Assert.Equal(expected.Body.Dom == null, actual.Body.Dom == null);
+                    Assert.Equals(expected.Body.Dom == null, actual.Body.Dom == null);
                     AssertCollection(expected.Body.Navs, actual.Body.Navs, (a, b) =>
                     {
-                        Assert.Equal(a.Dom == null, b.Dom == null);
-                        Assert.Equal(a.Class, b.Class);
-                        Assert.Equal(a.Hidden, b.Hidden);
-                        Assert.Equal(a.Id, b.Id);
-                        Assert.Equal(a.Type, b.Type);
+                        Assert.Equals(a.Dom == null, b.Dom == null);
+                        Assert.Equals(a.Class, b.Class);
+                        Assert.Equals(a.Hidden, b.Hidden);
+                        Assert.Equals(a.Id, b.Id);
+                        Assert.Equals(a.Type, b.Type);
                     });
                 }
             }
